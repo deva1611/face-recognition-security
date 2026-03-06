@@ -13,4 +13,7 @@ add_executable(face_recognition
     src/face_recognizer.cpp
 )
 
-target_link_libraries(face_recognition ${OpenCV_LIBS})
+target_link_libraries(face_recognition 
+    ${OpenCV_LIBS}
+    opencv_face
+)
