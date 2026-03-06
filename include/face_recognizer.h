@@ -2,16 +2,16 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/face.hpp>
 #include <string>
+#include <vector>
 #include <map>
 
 class FaceRecognizer {
 public:
     FaceRecognizer();
-    void loadKnownFaces(const std::string& folder);
-    std::string recognize(const cv::Mat& frame, const cv::Rect& face);
+    void train(const std::string& knownFacesDir);
+    std::string predict(const cv::Mat& face);
 
 private:
     cv::Ptr<cv::face::LBPHFaceRecognizer> recognizer;
-    std::map<int, std::string> label_names;
+    std::map<int, std::string> labelMap;
 };
-
