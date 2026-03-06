@@ -1,11 +1,15 @@
-#include <iostream>
 #include <opencv2/opencv.hpp>
 #include "face_detector.h"
-#include "face_recognizer.h"
+#include <iostream>
 
 int main() {
-    std::cout << "=== Face Recognition Security System ===" << std::endl;
-    std::cout << "Starting webcam..." << std::endl;
+    FaceDetector detector;
+
+    if (!detector.loadClassifier(
+        "/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml")) {
+        std::cerr << "Error: Could not load Haar Cascade classifier" << std::endl;
+        return -1;
+    }
 
     cv::VideoCapture cap(0);
     if (!cap.isOpened()) {
@@ -13,28 +17,20 @@ int main() {
         return -1;
     }
 
-    FaceDetector detector;
-    FaceRecognizer recognizer;
-    recognizer.loadKnownFaces("known_faces/");
-
     cv::Mat frame;
     while (true) {
         cap >> frame;
         if (frame.empty()) break;
 
-        auto faces = detector.detect(frame);
-        for (auto& face : faces) {
-            std::string name = recognizer.recognize(frame, face);
+        std::vector<cv::Rect> faces = detector.detectFaces(frame);
+
+        for (const auto& face : faces) {
             cv::rectangle(frame, face, cv::Scalar(0, 255, 0), 2);
-            cv::putText(frame, name, cv::Point(face.x, face.y - 10),
-                cv::FONT_HERSHEY_SIMPLEX, 0.9, cv::Scalar(0, 255, 0), 2);
         }
 
-        cv::imshow("Face Recognition Security", frame);
+        cv::imshow("Face Detection", frame);
         if (cv::waitKey(1) == 'q') break;
     }
 
-    cap.release();
-    cv::destroyAllWindows();
     return 0;
 }
