@@ -1,12 +1,13 @@
 #pragma once
 #include <opencv2/opencv.hpp>
-#include <vector>
+#include <string>
 
 class FaceDetector {
 public:
     FaceDetector();
-    std::vector<cv::Rect> detect(const cv::Mat& frame);
+    bool loadClassifier(const std::string& cascadePath);
+    std::vector<cv::Rect> detectFaces(const cv::Mat& frame);
 
 private:
-    cv::CascadeClassifier face_cascade;
+    cv::CascadeClassifier classifier;
 };
