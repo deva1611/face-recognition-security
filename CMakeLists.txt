@@ -11,9 +11,7 @@ add_executable(face_recognition
     src/main.cpp
     src/face_detector.cpp
     src/face_recognizer.cpp
+    src/esp32_notifier.cpp
 )
 
-target_link_libraries(face_recognition 
-    ${OpenCV_LIBS}
-    opencv_face
-)
+target_link_libraries(face_recognition ${OpenCV_LIBS})
