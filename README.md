@@ -3,7 +3,7 @@ A real-time face recognition security system built in C++ using OpenCV,
 running on Linux (Ubuntu). Recognises known individuals by name and 
 flags unknown visitors.
 
-## Live Demo
+## Features
 🎥 Identifies known faces by name (e.g. "Ravi")  
 ⚠️ Flags unknown faces as "Unknown"  
 ⚡ Real-time processing via webcam or ESP32 camera feed
@@ -34,7 +34,6 @@ face-recognition-security/
 │   └── face_recognizer.h
 ├── known_faces/
 ├── samples/
-├── tests/
 └── CMakeLists.txt
 ```
 
