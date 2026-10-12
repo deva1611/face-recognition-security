@@ -1,1 +1,5 @@
 build/
+
+# Personal face photos stay local
+known_faces/*
+!known_faces/.gitkeep
