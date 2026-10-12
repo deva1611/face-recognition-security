@@ -13,6 +13,12 @@ void FaceRecognizer::train(const std::string& knownFacesDir) {
     std::vector<int> labels;
     int label = 0;
 
+    if (!fs::is_directory(knownFacesDir)) {
+        std::cerr << "Warning: " << knownFacesDir
+                  << " not found - every face will show as Unknown" << std::endl;
+        return;
+    }
+
     for (const auto& entry : fs::directory_iterator(knownFacesDir)) {
         if (entry.path().extension() == ".jpg" ||
             entry.path().extension() == ".png") {
@@ -28,14 +34,22 @@ void FaceRecognizer::train(const std::string& knownFacesDir) {
         }
     }
 
-    if (!images.empty()) {
-        recognizer->train(images, labels);
-        std::cout << "Trained on " << images.size()
-                  << " faces" << std::endl;
+    if (images.empty()) {
+        std::cerr << "Warning: no photos in " << knownFacesDir
+                  << " - every face will show as Unknown" << std::endl;
+        return;
     }
+
+    recognizer->train(images, labels);
+    trained = true;
+    std::cout << "Trained on " << images.size()
+              << " faces" << std::endl;
 }
 
 std::string FaceRecognizer::predict(const cv::Mat& face) {
+    // An untrained LBPH model throws, so treat every face as unknown
+    if (!trained) return "Unknown";
+
     cv::Mat grey;
     cv::resize(face, grey, cv::Size(100, 100));
     cv::cvtColor(grey, grey, cv::COLOR_BGR2GRAY);
