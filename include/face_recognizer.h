@@ -14,4 +14,5 @@ public:
 private:
     cv::Ptr<cv::face::LBPHFaceRecognizer> recognizer;
     std::map<int, std::string> labelMap;
+    bool trained = false;
 };
